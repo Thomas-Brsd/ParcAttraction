@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Ajouter une critique</h2>
+<mat-dialog-content>
+  <form [formGroup]="critiqueForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="prenom">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Mon avis...</mat-label>
+      <textarea matInput formControlName="texte"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Note</mat-label>
+      <input matInput formControlName="note" type="number" min="1" max="5">
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Annuler</button>
+      <button mat-button type="submit" [disabled]="!critiqueForm.valid">Valider</button>
+    </div>
+  </form>
+</mat-dialog-content>

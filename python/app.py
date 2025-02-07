@@ -4,6 +4,7 @@ from flask_cors import CORS
 import request.request as req
 import controller.auth.auth as user
 import controller.attraction as attraction
+import controller.critique as critique  # Ajout de la gestion des critiques
 
 app = Flask(__name__)
 CORS(app)
@@ -51,6 +52,46 @@ def deleteAttraction(index):
         return "Element supprimé.", 200
     return jsonify({"message": "Erreur lors de la suppression."}), 500
 
+# Critique
+@app.post('/critique')
+def addCritique():
+    print("okok critique", flush=True)
+    # Fonction vérif token
+    checkToken = user.check_token(request)
+    if (checkToken != True):
+        return checkToken
+
+    json = request.get_json()
+    retour = critique.add_critique(json)
+    if (retour):
+        return jsonify({"message": "Critique ajoutée.", "result": retour}), 200
+    return jsonify({"message": "Erreur lors de l'ajout de la critique.", "result": retour}), 500
+
+@app.get('/critique')
+def getAllCritique():
+    result = critique.get_all_critique()
+    return result, 200
+
+@app.get('/critique/<int:index>')
+def getCritique(index):
+    result = critique.get_critique(index)
+    return result, 200
+
+@app.delete('/critique/<int:index>')
+def deleteCritique(index):
+
+    # Fonction vérif token
+    checkToken = user.check_token(request)
+    if (checkToken != True):
+        return checkToken
+
+    json = request.get_json()
+    
+    if (critique.delete_critique(index)):
+        return "Critique supprimée.", 200
+    return jsonify({"message": "Erreur lors de la suppression de la critique."}), 500
+
+# Login
 @app.post('/login')
 def login():
     json = request.get_json()

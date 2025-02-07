@@ -1,21 +1,35 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Bienvenue sur le site internet du parc d'attraction</mat-card-title>
+    <mat-card-title>Liste des attractions</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="attraction-title">
-      <div class="attraction">
-        <span>Nom de l'attraction</span>
-        <span>Description de l'attraction</span>
-        <span>Difficulté de l'attraction / 5</span>
-      </div>
-    </div>
-    <ng-container *ngFor="let attraction of attractions | async;">
-      <div class="attraction" *ngIf="attraction.visible == true">
-        <span>{{attraction.nom}}</span>
-        <span>{{attraction.description}}</span>
-        <span>{{attraction.difficulte}} / 5</span>
-      </div>
-    </ng-container>
+    <table mat-table [dataSource]="attractions" class="mat-elevation-z8">
+      <!-- Définition des colonnes -->
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef> Nom </th>
+        <td mat-cell *matCellDef="let attraction"> {{ attraction.nom }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let attraction"> {{ attraction.description }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="difficulte">
+        <th mat-header-cell *matHeaderCellDef> Difficulté </th>
+        <td mat-cell *matCellDef="let attraction"> {{ attraction.difficulte }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let attraction">
+          <button mat-button (click)="openCritiqueDialog(attraction.attraction_id)">Donner son avis</button>
+        </td>
+      </ng-container>
+
+      <!-- Définir les lignes et les colonnes -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </mat-card-content>
 </mat-card>
